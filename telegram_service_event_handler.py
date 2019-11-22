@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.7
+
 from telegram_bot_sdk.telegram import TelegramBot
 import argparse
 
