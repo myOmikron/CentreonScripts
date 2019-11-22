@@ -7,7 +7,7 @@ import argparse
 class CentreonNotificationBot:
     def __init__(self, credentials):
         self.telebot = TelegramBot(credentials)
-        with open("allowed_ids") as fh:
+        with open("/usr/lib64/nagios/plugins/CentreonScripts/allowed_ids") as fh:
             self.allowed_ids = fh.readlines()
 
     def send_message(self, message):
