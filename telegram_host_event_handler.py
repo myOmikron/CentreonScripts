@@ -16,6 +16,10 @@ class CentreonNotificationBot:
                 if chat_id.endswith("\n"):
                     self.telebot.send_message(chat_id=chat_id[:-1], text=message, disable_notification=False,
                                               parse_mode="Markdown")
+                else:
+                    self.telebot.send_message(chat_id=chat_id, text=message, disable_notification=False,
+                                              parse_mode="Markdown")
+
 
 
 def main(arguments):
