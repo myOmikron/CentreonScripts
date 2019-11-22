@@ -23,7 +23,7 @@ class CentreonNotificationBot:
 
 
 def main(arguments):
-    with open("credentials") as fh:
+    with open("/usr/lib64/nagios/plugins/CentreonScripts/credentials") as fh:
         token = fh.readline()
         if token.endswith("\n"):
             token = token[:-1]
