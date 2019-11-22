@@ -12,12 +12,17 @@ class CentreonNotificationBot:
 
     def send_message(self, message):
         for chat_id in self.allowed_ids:
-            self.telebot.send_message(chat_id=chat_id, text=message, disable_notification=False, parse_mode="Markdown")
+            if chat_id.endswith("\n"):
+                chat = chat_id[:-1]
+            self.telebot.send_message(chat_id=chat, text=message, disable_notification=False, parse_mode="Markdown")
 
 
 def main(arguments):
     with open("credentials") as fh:
-        bot = CentreonNotificationBot(fh.readline()[:-1])
+        token = fh.readline()
+        if token.endswith("\n"):
+            token = token[:-1]
+        bot = CentreonNotificationBot(token)
     message = "*ALERT*\n\nType: {} \nState: {}\nHost: {}\nAddress: {}\nInfo: {}\nDate/Time: {}"
     message = message.format(arguments.type, arguments.state, arguments.name, arguments.address, arguments.output,
                              arguments.date)
