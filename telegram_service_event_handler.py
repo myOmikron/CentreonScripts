@@ -28,8 +28,8 @@ def main(arguments):
             token = token[:-1]
         bot = CentreonNotificationBot(token)
     message = "*ALERT*\n\nType: {} \nState: {}\nHost: {}\nAddress: {}\nService: {}\nInfo: {}\nDate/Time: {}"
-    message = message.format(arguments.type, arguments.state, arguments.name, arguments.address, arguments.output,
-                             arguments.date)
+    message = message.format(arguments.type, arguments.state, arguments.name, arguments.address, arguments.sname,
+                             arguments.output, arguments.date)
     bot.send_message(message)
 
 
