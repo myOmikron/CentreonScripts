@@ -13,7 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("-P", "--process", action="store", dest="process", help="Process to search")
     args = parser.parse_args()
 
-    cmd = "pgrep " + args.process
+    cmd = "pgrep -c -f " + args.process
     if not args.user_name:
         args.user_name = "centreon-engine"
     if not args.port:
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     stream = Popen(['ssh', args.user_name + "@" + args.host_name, "-p " + args.port, cmd],
                    stdout=PIPE)
     out = stream.stdout.read().decode('utf-8')
-    if len(out.splitlines()) > 0:
+    if int(out) > 0:
         print("SERVICE STATUS: OK - Process is running")
         sys.exit(0)
     else:
