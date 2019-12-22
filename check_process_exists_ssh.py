@@ -13,7 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("-P", "--process", action="store", dest="process", help="Process to search")
     args = parser.parse_args()
 
-    cmd = "pgrep -c -f " + args.process
+    cmd = "pgrep -c -f '" + args.process + "'"
     if not args.user_name:
         args.user_name = "centreon-engine"
     if not args.port:
