@@ -14,7 +14,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     cmd = "pgrep " + args.process
-    stream = Popen(['ssh', args.user_name + "@" + args.host_name, "-p " + args.port if args.port else "-p 22", cmd],
+    if not args.user_name:
+        args.user_name = "centreon-engine"
+    if not args.port:
+        args.port = "22"
+    stream = Popen(['ssh', args.user_name + "@" + args.host_name, "-p " + args.port, cmd],
                    stdout=PIPE)
     out = stream.stdout.read().decode('utf-8')
     if len(out.splitlines()) > 0:
