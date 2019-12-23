@@ -16,24 +16,25 @@ if __name__ == '__main__':
     cmd = "df -h"
     run_list = ["ssh", args.hostname]
 
-    for item in args.ssh_options:
-        option = item[0]
-        if option.startswith("'"):
-            option = option[1:]
-        if option.endswith("'"):
-            option = option[:-1]
-        options = re.split("=", option)
-        for opt in options:
-            run_list.append(opt)
+    if args.ssh_options:
+        for item in args.ssh_options:
+            option = item[0]
+            if option.startswith("'"):
+                option = option[1:]
+            if option.endswith("'"):
+                option = option[:-1]
+            options = re.split("=", option)
+            for opt in options:
+                run_list.append(opt)
     run_list.append(cmd)
     try:
-        ret = subprocess.run(run_list, text=True, capture_output=True)
+        ret = subprocess.run(run_list, stdout=subprocess.PIPE)
     except:
         print("SERVICE STATE: UNKOWN - Error in SSH connection")
         sys.exit(3)
 
     disk_data = []
-    for line in ret.stdout.splitlines()[1:]:
+    for line in ret.stdout.decode('utf-8').splitlines()[1:]:
         disk_data.append([x for x in line.split(" ") if x])
 
     return_code = 0
