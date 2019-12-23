@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    cmd = "df -h"
-    run_list = ["ssh", args.hostname]
+    cmd = 'df -h'
+    run_list = ["ssh"]
 
     if args.ssh_options:
         for item in args.ssh_options:
@@ -26,6 +26,7 @@ if __name__ == '__main__':
             options = re.split("=", option)
             for opt in options:
                 run_list.append(opt)
+    run_list.append(args.hostname)
     run_list.append(cmd)
     try:
         ret = subprocess.run(run_list, stdout=subprocess.PIPE)
@@ -36,6 +37,10 @@ if __name__ == '__main__':
     disk_data = []
     for line in ret.stdout.decode('utf-8').splitlines()[1:]:
         disk_data.append([x for x in line.split(" ") if x])
+
+    if len(disk_data) == 0:
+        print("SERVICE STATE: UNKNOWN - No disks found")
+        sys.exit(3)
 
     return_code = 0
 
