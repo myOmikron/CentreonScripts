@@ -24,13 +24,14 @@ if __name__ == "__main__":
             options = re.split("=", option)
             for opt in options:
                 run_list.append(opt)
-
+    run_list.append("whoami")
     try:
-        ret = subprocess.run(run_list)           
-        if ret.returncode == 0:
-            print("SERVICE STATUS: OK - SSH Login successful")
+        ret = subprocess.run(run_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print("SERVICE STATUS: CRITICAL - SSH Server not reachable")
         sys.exit(2)
+    if ret.returncode == 0:
+        print("SERVICE STATUS: OK - SSH Login successful")
+        sys.exit(0)
     print("SERVICE STATUS: UNKNOWN")
     sys.exit(3)
