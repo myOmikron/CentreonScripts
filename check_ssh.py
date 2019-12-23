@@ -11,7 +11,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-H", "--hostname", action="store", required=True, dest="host_name", help="Name of the host to connect to")
     parser.add_argument("--ssh-option", action="append", nargs="*", dest="ssh_options", help="SSH options to specify behaviour")
+    parser.add_argument("--send-command", action="store", dest="send_command", type=int, help="Specify False, if you don't want to send a command")
     args = parser.parse_args()
+        
+    if args.send_command is None:
+        args.send_command = 1
+    if args.send_command != 0 and args.send_command != 1:
+        args.send_command = 1
 
     run_list = ["ssh", args.host_name]
     if args.ssh_options:
@@ -24,7 +30,8 @@ if __name__ == "__main__":
             options = re.split("=", option)
             for opt in options:
                 run_list.append(opt)
-    run_list.append("whoami")
+    if args.send_command == 1:
+        run_list.append("whoami")
     try:
         ret = subprocess.run(run_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
