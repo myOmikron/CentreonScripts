@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import OpenSSL
-import ssl, socket
 import dateutil.parser
 from datetime import datetime, timedelta
-import enum
 import sys
 import argparse
 import subprocess
