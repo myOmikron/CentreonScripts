@@ -3,26 +3,28 @@ import argparse
 import subprocess
 import sys
 
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-p", "--port", required=True, action="store", dest="port", default="22", help="SSH Port")
+    parser.add_argument("-p", "--port", action="store", dest="port", default="22", help="SSH Port")
     parser.add_argument("-H", "--host", required=True, action="store", dest="host", help="IP or domain to connect to")
+    parser.add_argument("-u", "--user", action="store", dest="user", default="centreon-engine", help="User")
+    parser.add_argument("--sudo", action="store_true", dest="sudo", help="specify true if sudo should be used")
 
     args = parser.parse_args()
 
-    run_list = ["ssh", "-p" + args.port, args.host,
-                "sudo /opt/hp/hpssacli/bld/hpssacli ctrl slot=0 pd all show | grep physicaldrive"]
+    run_list = ["ssh", "-p" + args.port, "-l", args.user, args.host,
+                "".join(["sudo" if args.sudo else "",
+                         "/opt/hp/hpssacli/bld/hpssacli ctrl slot=0 pd all show | grep physicaldrive"])]
     process = subprocess.run(run_list, stdout=subprocess.PIPE)
     stdout = process.stdout.decode('utf-8')
-    
+
     lines = stdout.split('\n')
     processed_lines = []
     for line in lines:
         processed_lines.append(line.lstrip(' '))
-    
+
     return_code = 0
     disks_ok = []
     disks_predictive_failure = []
@@ -54,4 +56,3 @@ if __name__ == "__main__":
         print(line)
 
     sys.exit(return_code)
-
