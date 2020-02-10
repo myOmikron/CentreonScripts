@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
-
+import argparse
 import subprocess
 import sys
 
 
 if __name__ == "__main__":
-    process = subprocess.run("/usr/lib/nagios/plugins/nrpe/./raid.sh", stdout=subprocess.PIPE)
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-p", "--port", required=True, action="store", dest="port", default="22", help="SSH Port")
+    parser.add_argument("-H", "--host", required=True, action="store", dest="host", help="IP or domain to connect to")
+
+    args = parser.parse_args()
+
+    run_list = ["ssh", "-p" + args.port, args.host,
+                "'/opt/hp/hpssacli/bld/hpssacli ctrl slot=0 pd all show | grep physicaldrive'"]
+
+    process = subprocess.run(run_list, stdout=subprocess.PIPE)
     stdout = process.stdout.decode('utf-8')
     
     lines = stdout.split('\n')
