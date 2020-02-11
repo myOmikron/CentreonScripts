@@ -27,14 +27,12 @@ if __name__ == "__main__":
     now = datetime.now().replace(tzinfo=None)
     remaining = expiring_date - now
 
-    if remaining < timedelta(days=args.critical):
+    if remaining < timedelta(days=int(args.critical)):
         print("SERVICE STATUS: Critical - Certificate expires at:", str(expiring_date.strftime("%b %d %Y %H:%M:%S")))
         sys.exit(1)
-    elif remaining < timedelta(days=args.warning):
+    elif remaining < timedelta(days=int(args.warning)):
         print("SERVICE STATUS: Warning - Certificate expires at:", str(expiring_date.strftime("%b %d %Y %H:%M:%S")))
         sys.exit(2)
     print("SERVICE STATUS: OK - Certificate expires at:", str(expiring_date.strftime("%b %d %Y %H:%M:%S")))
     sys.exit(0)
 
-
-    
