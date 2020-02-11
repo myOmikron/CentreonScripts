@@ -17,7 +17,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.port is None:
-        args.port = 443
+        args.port = "443"
     
     cmd = "echo | openssl s_client -showcerts -servername " + args.url + " -connect " + args.url + ":" + args.port + " 2>/dev/null | openssl x509 -inform pem -enddate -noout"
     ret = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
