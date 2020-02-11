@@ -11,8 +11,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--url", action="store", required=True, dest="url", help="URL of the specified website")
-    parser.add_argument("-w", "--warning", action="store", required=True, type=int,  dest="warning", help="Days after which the script should return a warning")
-    parser.add_argument("-c", "--critical", action="store", required=True, type=int, dest="critical", help="Days after which the script should return a critical error")
+    parser.add_argument("-w", "--warning", action="store", required=True, dest="warning", help="Days after which the script should return a warning")
+    parser.add_argument("-c", "--critical", action="store", required=True, dest="critical", help="Days after which the script should return a critical error")
     parser.add_argument("-p", "--port", action="store", dest="port", help="Optional: Port from https server")
     args = parser.parse_args()
 
