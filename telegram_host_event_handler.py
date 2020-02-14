@@ -30,7 +30,7 @@ def main():
     elif args.state == 'DOWN':
         emoticon = '&#x1f525;'
     elif args.state == 'RECOVERY':
-        emoticon = '&#x2934;;'
+        emoticon = '&#x2934;'
     elif args.state == 'UNREACHABLE':
         emoticon = '&#x2754;'
     else:
