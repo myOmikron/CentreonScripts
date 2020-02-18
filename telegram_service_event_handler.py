@@ -5,8 +5,8 @@ import argparse
 import requests
 
 
-def send_message(message, receiver):
-    with open('credentials') as fh:
+def send_message(message, receiver, credentials):
+    with open(credentials) as fh:
         token = fh.readline()
         if token.endswith('\n'):
             token = token[:-1]
@@ -24,6 +24,8 @@ def main():
     parser.add_argument('-a', '--address', required=True, action='store', dest='address', help='Address of the host')
     parser.add_argument('-o', '--output', required=True, action='store', dest='output', help='Output of the host')
     parser.add_argument('-i', '--id', required=True, action='store', dest='id', help='ID of the chat')
+    parser.add_argument('-c', '--credentials', required=True, action='store', dest='credentials',
+                        help='Path to credentials file')
     args = parser.parse_args()
 
     if args.state == 'OK':
@@ -44,7 +46,7 @@ def main():
     message += 'Output: ' + args.output + '\n'
     message += 'URL: https://centreon.omikron.dev/centreon/main.php?p=20201&o=svcd&host_name=' + args.name + \
                "&service_description=" + args.service.replace(' ', '+')
-    send_message(message, args.id)
+    send_message(message, args.id, args.credentials)
 
 
 if __name__ == '__main__':
