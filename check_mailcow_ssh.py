@@ -13,7 +13,7 @@ def check_for_updates(args):
     if "No updates available." in out:
         print("SERVICE OK: No updates available")
         sys.exit(0)
-    elif "Updates " in out:
+    elif "Updated code is available." in out:
         print("SERVICE WARNING: There are updates available")
         sys.exit(1)
     else:
