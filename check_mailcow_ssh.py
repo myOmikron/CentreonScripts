@@ -5,7 +5,7 @@ from subprocess import Popen, PIPE
 
 
 def check_for_updates(args):
-    cmd = "cd /opt/mailcow-dockerized/ && ./update.sh --check"
+    cmd = "cd /opt/mailcow-dockerized/ && sudo ./update.sh --check"
     stream = Popen(['ssh', args.user_name + "@" + args.host_name, "-p " + args.port, cmd], stdout=PIPE)
     out = stream.stdout.read().decode('utf-8')
     print(out)
