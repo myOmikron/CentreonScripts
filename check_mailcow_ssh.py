@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 from subprocess import Popen, PIPE
 
 
@@ -8,7 +9,17 @@ def check_for_updates(args):
     cmd = "cd /opt/mailcow-dockerized/ && sudo ./update.sh --check"
     stream = Popen(['ssh', args.user_name + "@" + args.host_name, "-p " + args.port, cmd], stdout=PIPE)
     out = stream.stdout.read().decode('utf-8')
-    print(out)
+
+    if "No updates available." in out:
+        print("SERVICE OK: No updates available")
+        sys.exit(0)
+    elif "Updates " in out:
+        print("SERVICE WARNING: There are updates available")
+        sys.exit(1)
+    else:
+        print("SERVICE UNKNOWN: Output", out)
+        sys.exit(3)
+
 
 
 def main():
@@ -22,7 +33,6 @@ def main():
         args.user_name = "centreon-engine"
     if not args.port:
         args.port = "22"
-
     check_for_updates(args)
 
 
