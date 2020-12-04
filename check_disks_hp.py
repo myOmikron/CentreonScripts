@@ -15,7 +15,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run_list = ["ssh", "-p" + args.port, "-l", args.user, args.host,
-                "".join(["sudo" if args.sudo else "",
+                "".join(["sudo " if args.sudo else "",
                          "/opt/hp/hpssacli/bld/hpssacli ctrl slot=0 pd all show | grep physicaldrive"])]
     process = subprocess.run(run_list, stdout=subprocess.PIPE)
     stdout = process.stdout.decode('utf-8')
