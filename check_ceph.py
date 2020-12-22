@@ -12,7 +12,6 @@
 #
 
 import argparse
-import re
 import subprocess
 
 
@@ -24,14 +23,14 @@ def check_health(arguments):
     cmd_list.append(command)
     process = subprocess.run(cmd_list, stdout=subprocess.PIPE)
     stdout = process.stdout.decode('utf-8')
-    if "HEALTH_OK" == stdout.strip():
-        print("HEALTH OK")
+    if stdout.strip().startswith("HEALTH_OK"):
+        print(f"{stdout.strip()}")
         exit(0)
-    elif "HEALTH_WARN" == stdout.strip():
-        print("HEALTH WARN")
+    elif stdout.strip().startswith("HEALTH_WARN"):
+        print(f"{stdout.strip()}")
         exit(1)
-    elif "HEALTH_ERR" == stdout.strip():
-        print("HEALTH ERR")
+    elif stdout.strip().startswith("HEALTH_ERR"):
+        print(f"{stdout.strip()}")
         exit(2)
     else:
         print(f"UNKNOWN - {stdout}")
