@@ -28,15 +28,15 @@ def check_chassis(arguments):
     output = "\n".join([": ".join(["Critical", x]) for x in health if health[x] == "Critical"])
     output += "\n".join([": ".join(["Warning", x]) for x in health if health[x] == "Warning"])
     output += "\n".join([": ".join(["Ok", x]) for x in health if health[x] == "Ok"])
-    if "Critical" in [x for x in health.items()]:
+    if "Critical" in [x[1] for x in health.items()]:
         print("Critical components:", ", ".join([x for x in health if health[x] == "Critical"]))
         print(output)
         exit(2)
-    elif "Warning" in [x for x in health.items()]:
+    elif "Warning" in [x[1] for x in health.items()]:
         print("Warning components:", ", ".join([x for x in health if health[x] == "Warning"]))
         print(output)
         exit(1)
-    elif "Ok" in [x for x in health.items()]:
+    elif "Ok" in [x[1] for x in health.items()]:
         print("Ok components:", ", ".join([x for x in health if health[x] == "Ok"]))
         print(output)
         exit(0)
