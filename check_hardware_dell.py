@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+
+#
+# In order to execute this plugin, sudo may have to be installed on the target system.
+# The user needs to have permissions to execute the /usr/bin/ceph executable. So add
+# the following lines to /etc/sudoers:
+#
+# User_Alias CENTREON = centreon-engine
+#
+# CENTREON ALL=(ALL) NOPASSWD: /opt/dell/srvadmin/bin/omreport chassis
+#
+
 import argparse
 import subprocess
 
