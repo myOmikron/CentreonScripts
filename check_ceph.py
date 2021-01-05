@@ -56,7 +56,7 @@ def check_osds(arguments):
             exit(0)
         else:
             print(f"Mismatch of expected {arguments.osd_num} OSDs and num: {osd_num}, up: {osd_up}, in: {osd_in}")
-            print(1)
+            exit(1)
     except Exception:
         print(f"UNKNOWN - Parsing of {stdout} failed")
         exit(3)
