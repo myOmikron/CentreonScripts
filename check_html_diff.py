@@ -6,8 +6,8 @@ import requests
 def main(arguments):
     try:
         with open(arguments.file, "r") as f:
-            old = f.readlines()
-        new = requests.get(arguments.url).text
+            old = f.read().strip()
+        new = requests.get(arguments.url, headers={"user-agent": "curl/7.74.0"}).text.strip().replace("\r\n", "\n")
         with open(arguments.file, "w") as f:
             f.write(new)
         if old != new:
@@ -19,7 +19,7 @@ def main(arguments):
     except FileNotFoundError:
         new = ""
         try:
-            new = requests.get(arguments.url).text
+            new = requests.get(arguments.url).text.strip()
         except requests.exceptions.ConnectionError:
             print(f"STATUS Critical - Could not connect")
             exit(2)
