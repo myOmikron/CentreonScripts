@@ -22,11 +22,16 @@ def get_status(arguments):
         command = "sudo " + command
     try:
         run_list = ["ssh", "-p", args.port, "-l", args.user, args.host, command]
-        result = subprocess.run(run_list, stdout=subprocess.PIPE).stdout.decode('utf-8')
-        result = result.replace('►', '').replace('—', '').replace('✔', '').replace('[', '').replace(']', '').replace('✘', '')
-        services = dict(x.replace(' ', '').rsplit("-", 1) for x in result.splitlines())
-        non_active_services = [(x, services[x]) for x in services if services[x] == "failed" or services[x] == "inactive"]
-        active_services = [(x, services[x]) for x in services if services[x] == "active"]
+        result = subprocess.run(run_list, stdout=subprocess.PIPE)
+        if result.returncode == 0:
+            result = result.stdout.decode('utf-8')
+            result = result.replace('►', '').replace('—', '').replace('✔', '').replace('[', '').replace(']', '').replace('✘', '')
+            services = dict(x.replace(' ', '').rsplit("-", 1) for x in result.splitlines())
+            non_active_services = [(x, services[x]) for x in services if services[x] == "failed" or services[x] == "inactive"]
+            active_services = [(x, services[x]) for x in services if services[x] == "active"]
+        else:
+            print(f"UNKNOWN - Returncode of SSH was not 0")
+            exit(3)
     except Exception as err:
         print(f"UNKNOWN - {err}")
         exit(3)
