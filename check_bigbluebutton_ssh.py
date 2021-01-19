@@ -32,14 +32,10 @@ def get_status(arguments):
         exit(3)
     if non_active_services:
         return_code = 2
-        print(f"Critical - Following components hasn't started: {', '.join([x[0] for x in non_active_services])}|")
-        for x in non_active_services:
-            print(f"{x[0]}: {x[1]}")
+        print(f"Critical - Following components hasn't started: {', '.join([x[0] for x in non_active_services])}||")
     else:
         return_code = 0
-        print(f"OK - All services are running|")
-    for x in active_services:
-        print(f"{x[0]}: {x[1]}")
+        print(f"OK - All services are running")
     exit(return_code)
 
 
