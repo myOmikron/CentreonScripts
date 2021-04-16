@@ -40,7 +40,7 @@ def main():
     params = {"meeting_id": args.meeting_id}
     response = make_request(args.host+"viewerCount", params={
         **params,
-        "checksum": get_checksum(params, "viewerCount", args.rcp_secret)
+        "checksum": get_checksum(params, args.rcp_secret, "viewerCount")
     })
     print("OK - "+str(response["value"])+" viewers")
     exit(0)
