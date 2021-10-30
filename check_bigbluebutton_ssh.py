@@ -47,10 +47,10 @@ def check_freeswitch(args):
             deaths = 0
             for month, day, hour, minute, second in kills:
                 kill = datetime(now.year, months[month], int(day), int(hour), int(minute), int(second))
-                if now - kill < timedelta(minutes=10):
+                if now - kill < timedelta(minutes=15):
                     deaths += 1
             if deaths > 0:
-                print(f"Critical - freeswitch was killed in the last 10min | 'freeswitch_killed'={deaths}[];[];[];[];[]")
+                print(f"Critical - freeswitch was killed in the last 15min | 'freeswitch_killed'={deaths}[];[];[];[];[]")
                 exit(2)
             else:
                 print(f"OK - no recent SIGKILLs | 'freeswitch_killed'={deaths}[];[];[];[];[]")
