@@ -12,6 +12,55 @@
 
 import argparse
 import subprocess
+import re
+from datetime import datetime, timedelta
+
+
+months = {
+    "Jan": 1,
+    "Feb": 2,
+    "Mar": 3,
+    "Apr": 4,
+    "May": 5,
+    "Jun": 6,
+    "Jul": 7,
+    "Aug": 8,
+    "Sep": 9,
+    "Oct": 10,
+    "Nov": 11,
+    "Dec": 12,
+}
+
+
+def check_freeswitch(args):
+    cmd = "journalctl -u freeswitch --no-pager"
+    if args.sudo:
+        cmd = "sudo " + cmd
+
+    try:
+        result = subprocess.run([
+            "ssh", "-p", args.port, "-l", args.user, args.host, cmd
+        ], stdout=subprocess.PIPE)
+        if result.returncode == 0:
+            kills = re.findall(r"([A-Za-z]+) ([0-9]+) ([0-9]+):([0-9]+):([0-9]+) .+? status=9/KILL", result.stdout.decode("utf-8"))
+            now = datetime.utcnow()
+            deaths = 0
+            for month, day, hour, minute, second in kills:
+                kill = datetime(now.year, months[month], int(day), int(hour), int(minute), int(second))
+                if now - kill < timedelta(minutes=10):
+                    deaths += 1
+            if deaths > 0:
+                print(f"Critical - freeswitch was killed in the last 10min | 'freeswitch_killed'={deaths}[];[];[];[];[]")
+                exit(2)
+            else:
+                print(f"OK - no recent SIGKILLs | 'freeswitch_killed'={deaths}[];[];[];[];[]")
+                exit(0)
+        else:
+            print(f"UNKNOWN - Returncode of SSH was not 0")
+            exit(3)
+    except Exception as err:
+        print(f"UNKNOWN - {err}")
+        exit(3)
 
 
 def get_status(arguments):
@@ -84,7 +133,7 @@ if __name__ == '__main__':
         action="store",
         dest="check",
         required=True,
-        choices=["status"],
+        choices=["status", "freeswitch"],
         help="Specify the check that should be executed"
     )
 
@@ -92,3 +141,5 @@ if __name__ == '__main__':
 
     if args.check == "status":
         get_status(args)
+    elif args.check == "freeswitch":
+        check_freeswitch(args)
